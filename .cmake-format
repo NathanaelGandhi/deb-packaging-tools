@@ -1,0 +1,11 @@
+---
+format:
+  tab_size: 2
+  max_subgroups_hwrap: 3
+  dangle_parens: true
+  command_case: "unchanged"
+  line_width: 80
+
+lint:
+  disabled_codes:
+    - "C0103"

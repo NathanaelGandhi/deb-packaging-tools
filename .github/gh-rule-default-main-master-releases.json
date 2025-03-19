@@ -1,0 +1,55 @@
+{
+  "id": 1302537,
+  "name": "gh-rule-default-main-master-releases",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "NathanaelGandhi/template-repo-v2",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~DEFAULT_BRANCH",
+        "refs/heads/main",
+        "refs/heads/master",
+        "refs/heads/release*"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": true,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": true
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "label_pr",
+            "integration_id": 15368
+          },
+          {
+            "context": "pre-commit.ci - pr",
+            "integration_id": 68672
+          }
+        ]
+      }
+    }
+  ],
+  "bypass_actors": []
+}

@@ -1,0 +1,7 @@
+## [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+
+## Default owner(s) for everything in the repo unless a later match takes precedence.
+* @NathanaelGandhi
+
+# /.github/ @
+# /docs/ @

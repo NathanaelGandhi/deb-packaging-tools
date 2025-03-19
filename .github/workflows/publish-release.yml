@@ -1,0 +1,61 @@
+---
+name: Publish Release
+on:
+  push:
+    branches:
+      - release
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publish_release:
+    permissions:
+      # write permission is required to create a github release
+      contents: write
+      # write permission is required for autolabeler
+      # otherwise, read permission is required at least
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set github_sha_short output
+        id: short_sha
+        run: echo "github_sha_short=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_OUTPUT
+      - name: Sanitise version
+        id: sanitised_version
+        # only modifies pushed tags, otherwise output GITHUB_REF
+        run: |
+          ref=${GITHUB_REF/refs\/tags\//}
+          version=${ref#v}
+          echo "version=${ref#v}" >> $GITHUB_OUTPUT
+          echo "Output version: ${version}"
+      - name: Create release
+        id: create_release
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter-config.yml
+          disable-autolabeler: true
+          prerelease: false
+          # prerelease-identifier: ??   # prerelease x.x.x-??.x
+          publish: true
+          version: ${{ steps.sanitised_version.outputs.version }}
+          name: v$RESOLVED_VERSION+${{ steps.short_sha.outputs.github_sha_short }}
+          tag: v$RESOLVED_VERSION+${{ steps.short_sha.outputs.github_sha_short }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+###
+# The following comment block is an example of how to upload release assets
+###
+# - uses: actions/checkout@v4 # if not previously run
+# - name: test artifact
+#   id: test_artifact
+#   if: success()
+#   run: |
+#       echo "${{ steps.create_release.outputs.tag_name }}" >> tag.txt
+# - name: upload release assets
+#   id: upload-release-assets
+#   if: success()
+#   env:
+#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       FILES: tag.txt # space separated list of files to upload
+#   run: |
+#       gh release upload --clobber ${{ steps.create_release.outputs.tag_name }} ${{ env.FILES }}
