@@ -1,0 +1,8 @@
+Package: ng-deb-tools
+Version: 0.1.0
+Architecture: all
+Essential: no
+Priority: optional
+Depends:
+Maintainer: Nathanael Gandhi <nat11public@gmail.com>
+Description: Personal debian packaging tools (metapackage)
