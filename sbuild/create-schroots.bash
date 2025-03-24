@@ -19,7 +19,7 @@ Options:
 Example:
   $0 -h
 
-Notes: Enables cross-arch package builds via sbuild to create a dedicated clean build environment using chroot, to 
+Notes: Enables cross-arch package builds via sbuild to create a dedicated clean build environment using chroot
 ---
 EOF
 )
@@ -27,7 +27,7 @@ while [[ "$#" -gt 0 ]]; do # Parse command line arguments and override defaults 
     case $1 in
         # --special-arg) SPECIAL_ARG="$2"; shift ;;   # Handle `--<option> <value>`
         -a|--arch) arch="$2"; shift ;;
-        -d|--os-codename) os_codename="$2"; shift ;;
+        -o|--os-codename) os_codename="$2"; shift ;;
         -p|--proxy) proxy="$2"; shift ;;
         -h|--help) echo "$help_prompt"; exit 0 ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
@@ -82,6 +82,7 @@ else
     echo "User $USER is not in the $group group. Adding..."
     runSudo usermod -aG "$group" "$USER"
     echo "User $USER has been added to the $group group."
+    echo "Note: You will need to rerun this script to continue..."
     sg $group
 fi
 
