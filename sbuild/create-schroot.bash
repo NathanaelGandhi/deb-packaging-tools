@@ -19,7 +19,7 @@ Options:
 Example:
   $0 -h
 
-Notes: Enables cross-arch package builds via sbuild to create a dedicated clean build environment using chroot, to 
+Notes: Enables cross-arch package builds via sbuild to create a dedicated clean build environment using chroot, to
 ---
 EOF
 )
