@@ -2,7 +2,7 @@
 
 ### BASH SCRIPT SETUP ##############################################################################
 export DEBIAN_FRONTEND=noninteractive
-arch="amd64"
+arch="amd64" # Host architecture (Arch we are building for)
 arch_options=("amd64" "arm64" "riscv64")
 os_codename="$(. /etc/os-release && echo $VERSION_CODENAME)"
 os_codename_options=("noble")
@@ -45,15 +45,16 @@ function runSudo(){ [[ "${USER:-root}" == "root" ]] && "$@" || sudo "$@"; }
 
 # Guard on valid options
 if [[ ! " ${arch_options[*]} " =~ $arch ]]; then
-  echo "Invalid architecture: $arch"
+  echo "Unsupported architecture: $arch"
   exit 1
 fi
 if [[ ! " ${os_codename_options[*]} " =~ $os_codename ]]; then
-  echo "Invalid distribution: $os_codename"
+  echo "Unsupported distribution: $os_codename"
   exit 1
 fi
 if [[ -n $proxy ]]; then
   # Conditionally enable debootstrap proxy
+  echo "Enabling DEBOOTSTRAP_PROXY=$proxy"
   export DEBOOTSTRAP_PROXY=$proxy
 fi
 
@@ -64,8 +65,8 @@ for pkg in "${pkgs[@]}"; do
       echo "$pkg is already installed."
   else
       echo "$pkg is not installed. Installing now..."
-      sudo apt-get update
-      sudo apt-get install -y "$pkg"
+      runSudo apt-get update
+      runSudo apt-get install -y "$pkg"
   fi
   # Guard on successful application install
   if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then

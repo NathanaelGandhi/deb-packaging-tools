@@ -1,5 +1,6 @@
 ### General
 *.log
+build_deb/
 
 ### ROS2
 build/

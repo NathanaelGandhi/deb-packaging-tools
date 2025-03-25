@@ -109,6 +109,29 @@ fi # end [[ $is_nginx == true ]]
 ####################################################################################################
 
 # TODO: 2. Setup repo's
+if [[ ${#repo_dir_list[@]} -gt 0 ]]; then
+  for idx in "${!repo_dir_list[@]}"; do
+    repo_dir=${repo_dir_list[$idx]}
+    repo_codename=${repo_codename_list[$idx]}
+    repo_component=${repo_component_list[$idx]}
+    echo "Setting up repo: $repo_dir $repo_codename $repo_component"
+    runSudo mkdir -p "$repo_dir"
+    if [[ ! -f "$repo_dir/InRelease" ]]; then
+      echo "Setting up new repo"
+      runSudo apt-ftparchive --arch amd64 generate \
+        "$repo_dir" \
+        "$repo_dir/dists/$repo_codename/main/binary-amd64/Packages.gz" \
+        > "$repo_dir/dists/$repo_codename/Release"
+      runSudo apt-ftparchive --arch amd64 release \
+        "$repo_dir/dists/$repo_codename" \
+        > "$repo_dir/dists/$repo_codename/Release"
+      runSudo gpg --output "$repo_dir/dists/$repo_codename/Release.gpg" --detach-sign "$repo_dir/dists/$repo_codename/Release"
+      runSudo gpg --output "$repo_dir/dists/$repo_codename/InRelease" --clearsign "$repo_dir/dists/$repo_codename/Release"
+    fi
+  done
+else
+  echo "No repo's configured"
+fi
 
 ####################################################################################################
 

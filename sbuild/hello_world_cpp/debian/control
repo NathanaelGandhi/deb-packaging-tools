@@ -1,9 +1,0 @@
-Source: hello-world-cpp
-Maintainer: Nathanael Gandhi <nat11public@gmail.com>
-Priority: optional
-Standards-Version: 4.7.2
-
-Package: hello-world-cpp
-Architecture: any
-Depends:
-Description: Hello World test package
