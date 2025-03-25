@@ -12,7 +12,7 @@ chroot_options=("$(ls /var/lib/schroot/chroots/)")
 proxy=""
 ros_distro="rolling"
 ros_distro_options=("rolling" "jazzy")
-src_dir="."
+src_dir="$(pwd)"
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 help_prompt=$(cat <<EOF
 Usage: $0 [OPTIONS]
@@ -83,7 +83,7 @@ if [[ -n $proxy ]]; then
 fi
 
 # Install application(s)
-pkgs=("sbuild" "ubuntu-dev-tools" "debhelper")
+pkgs=("sbuild" "debhelper" "ubuntu-dev-tools")
 for pkg in "${pkgs[@]}"; do
   if dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then
       echo "$pkg is already installed."
@@ -111,7 +111,7 @@ else
   sg $group
 fi
 
-bash "${script_dir}"/generate-debian-files.bash --src "$src_dir" --os-codename "$os_codename"
+"${script_dir}/generate-debian-files.bash" --src "$src_dir" --os-codename "$os_codename"
 
 cd "$src_dir" || { echo "Failed to change directory to $src_dir"; pwd; exit 1; }
 

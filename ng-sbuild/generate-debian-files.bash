@@ -7,7 +7,7 @@ arch_options=("amd64" "arm64" "riscv64")
 os_codename="$(. /etc/os-release && echo $VERSION_CODENAME)"
 os_codename_options=("noble")
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-src_dir="."
+src_dir="$(pwd)"
 help_prompt=$(cat <<EOF
 Usage: $0 [OPTIONS]
 
@@ -45,28 +45,46 @@ set -euo pipefail
 
 cd "$src_dir" || { echo "Failed to change directory to ${src_dir}"; exit 1; }
 
-# Check if debian directory exists, if not, create it
-if [[ ! -d "debian" ]]; then
-  echo "Creating debian directory..."
-  mkdir -p debian
-fi
-
 # setup debian/control
 if [[ ! -f "debian/control" ]]; then
+  # Install application(s)
+  pkgs=("dh-make" "devscripts" "build-essential" "lintian")
+  for pkg in "${pkgs[@]}"; do
+    if dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then
+        echo "$pkg is already installed."
+    else
+        echo "$pkg is not installed. Installing now..."
+        runSudo apt-get update
+        runSudo apt-get install -y "$pkg"
+    fi
+    # Guard on successful application install
+    if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then
+      echo "Error: Installing $pkg"
+      exit 1
+    fi
+  done
   pkg_name=$(basename "$src_dir" | tr ' _' '-') # Extract the last directory name and replace underscores and spaces with hyphens
-  cat << EOF > debian/control
-Source: $pkg_name
-Section: misc
-Priority: optional
-Maintainer: Nathanael Gandhi <nat11public@gmail.com>
-Build-Depends:
-Standards-Version: 4.7.2
+  dh_make -p "${pkg_name}_0.1.0" --createorig
+  exit 2
 
-Package: $pkg_name
-Architecture: any
-Depends:
-Description: Hello World test package
-EOF
+#   # Check if debian directory exists, if not, create it
+#   if [[ ! -d "debian" ]]; then
+#     echo "Creating debian directory..."
+#     mkdir -p debian
+#   fi
+#   cat << EOF > debian/control
+# Source: $pkg_name
+# Section: misc
+# Priority: optional
+# Maintainer: Nathanael Gandhi <nat11public@gmail.com>
+# Build-Depends: cmake, debhelper-compat (= 13)
+# Standards-Version: 4.7.2
+
+# Package: $pkg_name
+# Architecture: any
+# Depends: ${shlibs:Depends}, ${misc:Depends}
+# Description: Hello World test package
+# EOF
 else
   echo "debian/control already exists, skipping..."
 fi
@@ -88,25 +106,30 @@ else
   echo "debian/rules already exists, skipping..."
 fi
 
-# Create the debian/compat file
-if [[ ! -f "debian/compat" ]]; then
-  # Create the debian/compat file with compatibility level 13 (adjustable)
-  echo "13" > debian/compat
+# Note: Now handled in control
+# # Create the debian/compat file
+# if [[ ! -f "debian/compat" ]]; then
+#   # Create the debian/compat file with compatibility level 13 (adjustable)
+#   echo "13" > debian/compat
 
-  # Make sure the compat file is executable
-  chmod +x debian/compat
-else
-  echo "debian/compat already exists, skipping..."
-fi
+#   # Make sure the compat file is executable
+#   chmod +x debian/compat
+# else
+#   echo "debian/compat already exists, skipping..."
+# fi
 
 # Create the debian/source/format file
-if [[ ! -f "debian/cosource/format" ]]; then
+if [[ ! -f "debian/source/format" ]]; then
   mkdir -p debian/source
-  echo "3.0 (quilt)" > debian/source/format
+  echo "1.0" > debian/source/format
+  # echo "3.0 (quilt)" > debian/source/format
   chmod +x debian/source/format
 else
   echo "debian/source/format already exists, skipping..."
 fi
+
+# Create the debian/install file
+# build/myproject usr/bin
 
 cd -
 

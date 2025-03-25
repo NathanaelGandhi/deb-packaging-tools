@@ -8,7 +8,7 @@ os_codename="$(. /etc/os-release && echo $VERSION_CODENAME)"
 os_codename_options=("noble")
 proxy=""
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-src_dir="."
+src_dir="$(pwd)"
 help_prompt=$(cat <<EOF
 Usage: $0 [OPTIONS]
 
@@ -42,7 +42,8 @@ echo "$help_prompt" # Always remind the user of this scripts usage
 # sudo in a root context (ie. in docker containers). Falls back to sudo on error
 # shellcheck disable=SC2015
 function runSudo(){ [[ "${USER:-root}" == "root" ]] && "$@" || sudo "$@"; }
-# set -x # print each command and its arguments as they are executed
+set -x # print each command and its arguments as they are executed
+set -euo pipefail
 ### END BASH SCRIPT SETUP ##########################################################################
 
 # Guard on valid options
@@ -55,14 +56,14 @@ if [[ ! " ${os_codename_options[*]} " =~ $os_codename ]]; then
   exit 1
 fi
 
-# build cpp package
-mkdir -p "${src_dir}/build"
-cd "${src_dir}/build" || { echo "Failed to change directory to ${src_dir}/build"; exit 1; }
-cmake ..
-make DESTDIR="$(pwd)/../" install
-cd -
+# # build cpp package
+# mkdir -p "${src_dir}/build"
+# cd "${src_dir}/build" || { echo "Failed to change directory to ${src_dir}/build"; exit 1; }
+# cmake ..
+# make DESTDIR="$(pwd)/../" install
+# cd -
 
-# setup build env
+# setup shm-build env
 cmd="${script_dir}/create-schroots.bash"
 cmd+=" --arch $arch"
 cmd+=" --os-codename $os_codename"
