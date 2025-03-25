@@ -1,6 +1,17 @@
 ### General
 *.log
+
+### deb builds
 build_deb/
+**/debian/**
+!**/debian/source
+!**/debian/source/format
+!**/debian/changelog
+!**/debian/compat
+!**/debian/control
+!**/debian/install
+!**/debian/postinst
+!**/debian/rules
 
 ### ROS2
 build/

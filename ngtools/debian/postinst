@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Make the scripts executable
+chmod +x /usr/bin/ngtools-*
+
+# Remove .py and .bash extensions
+for script in /usr/bin/ngtools-*; do
+  base_name=$(basename "$script")
+  case "$base_name" in
+    *.py) mv "$script" "${script%.py}" ;;
+    *.bash) mv "$script" "${script%.bash}" ;;
+  esac
+done
+
+exit 0
