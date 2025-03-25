@@ -99,6 +99,15 @@ else
   echo "debian/compat already exists, skipping..."
 fi
 
+# Create the debian/source/format file
+if [[ ! -f "debian/cosource/format" ]]; then
+  mkdir -p debian/source
+  echo "3.0 (quilt)" > debian/source/format
+  chmod +x debian/source/format
+else
+  echo "debian/source/format already exists, skipping..."
+fi
+
 cd -
 
 if [[ -f "${script_dir}"/generate-debian-changelog.bash ]]; then
