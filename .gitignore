@@ -13,6 +13,11 @@ build_deb/
 !**/debian/postinst
 !**/debian/rules
 
+### Python
+__pycache__/
+*.egg-info/
+.venv/
+
 ### ROS2
 build/
 install/

@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 
-# Local binary build: 	debuild -b
-
 import argparse
 import os
 import subprocess
 
-def parse_args():
+from ngtools_dpkg.ngtools_dpkg_common import env_args_list_to_dict
+
+def _parse_args(argv=None) -> argparse.Namespace:
   parser = argparse.ArgumentParser(description='Build a source deb from a dir.')
-  parser.add_argument('--working-dir', '--cwd', type=str, default=os.getcwd(),
+  parser.add_argument('--cwd', type=str, default=os.getcwd(),
                       help='specify the working directory (default: current directory)')
   # Define 'env' as a list of strings, each in the format KEY=VALUE
   parser.add_argument('--env', type=str, action='append',  # Allows multiple environment variables to be passed
                       help='Set environment variables, in the form KEY=VALUE')
-  parser.add_argument('--upstream-tar', action='store_true',
-                      help='create a debian source package with an upstream tarball')
-  parser.add_argument('--no-lintian', action='store_true',
-                      help='do not run lintian on the source package')
   parser.add_argument('--no-clean', action='store_true',
                       help='do not run dh_clean')
+  parser.add_argument('--no-lintian', action='store_true',
+                      help='do not run lintian on the source package')
   parser.add_argument('--no-sign', action='store_true',
                       help='do not sign the source package')
-  return parser.parse_args()
+  parser.add_argument('--upstream-tar', action='store_true',
+                      help='create a debian source package with an upstream tarball')
+  return parser.parse_args(argv)
 
-def build_source_deb(args):
+def build_source_deb(args: argparse.Namespace):
    # Base command
   cmd = ['debuild']
 
@@ -50,21 +50,14 @@ def build_source_deb(args):
     cmd.append('-us')
     cmd.append('-uc')
 
-  # Convert the list of env vars (e.g., ["KEY1=VALUE1", "KEY2=VALUE2"]) to a dictionary
-  env = os.environ.copy()  # Start with the current environment
-  if args.env:
-      for item in args.env:
-          key, value = item.split('=', 1)
-          env[key] = value
-
   # Run cmd
   print("Running cmd: '" + ' '.join(cmd) + "'")
-  # subprocess.check_call(cmd)
-  subprocess.check_call(cmd, cwd=args.working_dir, env=env)
+  subprocess.check_call(cmd, cwd=args.cwd, env=env_args_list_to_dict(args.env))
 
-def main():
-  args = parse_args()
+def main(argv=None):
+  args = _parse_args(argv)
   build_source_deb(args)
 
 if __name__ == "__main__":
+    print("Hello from ngtools-dpkg.build_package_source!")
     main()
