@@ -5,6 +5,8 @@ import os
 import subprocess
 
 from ngtools_dpkg.common import env_args_list_to_dict
+from ngtools_dpkg.common import get_os_version_codename
+from ngtools_dpkg.common import get_architecture
 
 
 def _parse_args(argv=None) -> argparse.Namespace:
@@ -33,25 +35,25 @@ def _parse_args(argv=None) -> argparse.Namespace:
     sbuild_parser.add_argument(
         "--dist",
         type=str,
-        default="TODO",  # TODO: add build os_codename
+        default=f"{get_os_version_codename()}",
         help="specify the debian/ubuntu distribution to build the package for",
     )
     sbuild_parser.add_argument(
         "--chroot",
         type=str,
-        default="TODO",  # TODO: os_codename-build_arch
+        default=f"{get_os_version_codename()}_{get_architecture()}",
         help="specify the chroot to build the package in",
     )
     sbuild_parser.add_argument(
         "--host_arch",
         type=str,
-        default="TODO",  # TODO: build_arch
+        default=f"{get_architecture()}",
         help="specify the host architecture to build the package for",
     )
     sbuild_parser.add_argument(
         "--build_arch",
         type=str,
-        default="TODO",  # TODO: build_arch
+        default=f"{get_architecture()}",
         help="specify the build architecture to build the package on",
     )
     sbuild_parser.add_argument(
