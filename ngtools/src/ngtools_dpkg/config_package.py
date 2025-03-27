@@ -107,7 +107,7 @@ def _rosdebian_generator(cwd=None, env=None, check=True):
     pass
 
 
-def main(argv=None):
+def main(argv: list[str] | None = None) -> None:
     args = _parse_args(argv)
 
     if args.mode:

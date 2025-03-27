@@ -54,7 +54,7 @@ def build_source_deb(args: argparse.Namespace):
   print("Running cmd: '" + ' '.join(cmd) + "'")
   subprocess.check_call(cmd, cwd=args.cwd, env=env_args_list_to_dict(args.env))
 
-def main(argv=None):
+def main(argv: list[str] | None = None) -> None:
   args = _parse_args(argv)
   build_source_deb(args)
 
