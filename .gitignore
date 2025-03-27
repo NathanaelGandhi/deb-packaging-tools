@@ -1,6 +1,23 @@
 ### General
 *.log
 
+### deb builds
+build_deb/
+**/debian/**
+!**/debian/source
+!**/debian/source/format
+!**/debian/changelog
+!**/debian/compat
+!**/debian/control
+!**/debian/install
+!**/debian/postinst
+!**/debian/rules
+
+### Python
+__pycache__/
+*.egg-info/
+.venv/
+
 ### ROS2
 build/
 install/
@@ -126,7 +143,6 @@ ui_*.h
 *.qmlc
 *.jsc
 Makefile*
-*build-*
 *.qm
 *.prl
 

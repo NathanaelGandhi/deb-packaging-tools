@@ -1,0 +1,8 @@
+Package: pkg-from-src
+Version: 0.1.0
+Architecture: all
+Essential: no
+Priority: optional
+Depends:
+Maintainer: Nathanael Gandhi <nat11public@gmail.com>
+Description: 
