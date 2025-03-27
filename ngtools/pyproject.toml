@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "argparse>=1.4.0",
+    "bloom>=0.12.0",
 ]
 
 [project.scripts]

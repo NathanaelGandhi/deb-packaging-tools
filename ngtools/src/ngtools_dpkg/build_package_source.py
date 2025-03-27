@@ -4,7 +4,7 @@ import argparse
 import os
 import subprocess
 
-from ngtools_dpkg.ngtools_dpkg_common import env_args_list_to_dict
+from ngtools_dpkg.common import env_args_list_to_dict
 
 def _parse_args(argv=None) -> argparse.Namespace:
   parser = argparse.ArgumentParser(description='Build a source deb from a dir.')

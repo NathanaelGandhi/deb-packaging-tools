@@ -1,0 +1,5 @@
+hello-world-cpp (0.0.1-1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- n <n@unknown>  Thu, 27 Mar 2025 16:44:43 +1100
