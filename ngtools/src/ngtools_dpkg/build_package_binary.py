@@ -99,10 +99,10 @@ def local_binary_build(args: argparse.Namespace):
 
 
 def sbuild_binary_build(args: argparse.Namespace):
-    # verify arg: --dist
-    # verify arg: --chroot
-    # verify arg: --host_arch
-    # verify arg: --build_arch
+    # verify arg: --dist            #TODO
+    # verify arg: --chroot          #TODO
+    # verify arg: --host_arch       #TODO
+    # verify arg: --build_arch      #TODO
 
     # https://manpages.debian.org/buster/sbuild/sbuild.1.en.html
     # Note: Build architecture (Arch we are building on). Host architecture (Arch we are building for)
