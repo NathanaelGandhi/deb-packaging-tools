@@ -1,6 +1,19 @@
 ### General
 *.log
 
+### Python
+*.egg
+*.egg-info
+dist
+build
+.tox
+.nox
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.py[co]
+
 ### ROS2
 build/
 install/
