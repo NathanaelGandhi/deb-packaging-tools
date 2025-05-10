@@ -1,0 +1,9 @@
+Source: hello-world-cpp-ros
+Maintainer: Nathanael Gandhi <nat11public@gmail.com>
+Priority: optional
+Standards-Version: 0.1.0
+
+Package: hello-world-cpp-ros
+Architecture: any
+Depends: debhelper-compat (= 13)
+Description: Hello World test package

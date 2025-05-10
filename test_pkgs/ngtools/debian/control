@@ -1,0 +1,13 @@
+Source: ngtools
+Section: utils
+Priority: optional
+Maintainer: Nathanael Gandhi <nat11public@gmail.com>
+Build-Depends: debhelper (>= 12), python3
+Standards-Version: 4.5.0
+
+Package: ngtools
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A collection of useful scripts (Python and Bash).
+ This package provides a set of scripts that can be called by name without
+ extensions.

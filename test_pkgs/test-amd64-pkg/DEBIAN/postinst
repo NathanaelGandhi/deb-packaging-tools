@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Post-install script
+
+echo "Finished $0"

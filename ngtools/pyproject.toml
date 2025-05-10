@@ -1,0 +1,26 @@
+[project]
+name = "ngtools"
+version = "0.1.0"
+description = "Collection of personal tools"
+readme = "README.md"
+authors = [
+    { name = "Nathanael Gandhi", email = "nat11public@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "argparse>=1.4.0",
+    "bloom>=0.12.0",
+]
+
+[project.scripts]
+ngtools = "ngtools:main"
+ngtools-dpkg = "ngtools_dpkg:main"
+ngtools-dpkgbuildpackagesource = "ngtools_dpkg.build_package_source:main"
+ngtools-dpkgbuildpackagebinary = "ngtools_dpkg.build_package_binary:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = []

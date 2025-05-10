@@ -1,8 +1,12 @@
-# <!-- <Repository name> -->
+# DEB-PACKAGING-TOOLS
 
 <!-- <About/description> -->
 
 ## Getting Started
+
+To build deb packages, from this directory, execute:
+
+```dpkg-deb --build <deb_project_dir>```
 
 <!-- ### Prerequisites -->
 
